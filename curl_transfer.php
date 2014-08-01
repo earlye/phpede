@@ -8,7 +8,15 @@ function curl_transfer( $url , $curloptions )
   global $config;
 
   $verbose = isset( $config->curl ) && $config->curl->verbose;
-
+  
+  $header_file = fopen("php://temp/maxmemory:$fiveMBs", 'w');
+  if ( !isset($curloptions[CURLOPT_WRITEHEADER]) )
+    {
+      $curloptions[CURLOPT_WRITEHEADER] = $header_file;
+      $curloptions[CURLINFO_HEADER_OUT] = true;
+      $curloptions[CURLOPT_HEADER] = true;
+    }
+  
   if ( $verbose )
     {
       $method = entry( $curloptions, CURLOPT_CUSTOMREQUEST, "GET" );
@@ -25,13 +33,6 @@ function curl_transfer( $url , $curloptions )
 	echo "$header\n";
       echo "\n$data\n";
 
-      $header_file = fopen("php://temp/maxmemory:$fiveMBs", 'w');
-      if ( !isset($curloptions[CURLOPT_WRITEHEADER]) )
-	{
-	  $curloptions[CURLOPT_WRITEHEADER] = $header_file;
-	  $curloptions[CURLINFO_HEADER_OUT] = true;
-	  $curloptions[CURLOPT_HEADER] = true;
-	}
       echo "</pre>\n";
     }
 
@@ -43,16 +44,23 @@ function curl_transfer( $url , $curloptions )
 
   $result = curl_exec( $curl );
 
+  $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+  $headers = substr($result, 0, $header_size);
+  $result  = substr($result, $header_size);
+
+  $http_code = curl_getinfo($curl,CURLINFO_HTTP_CODE);
+
   if ( $verbose )
     {
-      $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
-      $headers = substr($result, 0, $header_size);
-      $result  = substr($result, $header_size);
-
-      echo "Response:\n<pre>\n";
+      echo "Response: $http_code\n";
       echo "$headers";
       echo "$result\n";
-      echo "</pre>\n";
+      echo "===\n";
+    }
+
+  if ( ! ( 200 <= $http_code && $http_code < 300 ) ) 
+    {
+      throw new Exception( "HTTP code: $http_code" );
     }
 
   return $result;
