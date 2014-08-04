@@ -12,7 +12,6 @@ function find_file_in_parent_directories( $basename , $first_directory )
   while(true)
     {
       $filename = $dir.DIRECTORY_SEPARATOR.$basename;
-      echo $filename."<br/>\n"; flush();
       if ( file_exists( $filename ) )
         {
           return $filename;
