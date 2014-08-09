@@ -27,7 +27,7 @@ function curl_transfer( $url , $curloptions )
       $uri = $path;
       if ( strlen( $query ) )
 	$uri .= "?$query";
-      echo "Request:\n<pre>\n";
+      echo "Request: $url\n<pre>\n";
       echo "$method $uri HTTP/1.1\n";
       foreach( entry( $curloptions, CURLOPT_HTTPHEADER , array() ) as $header )
 	echo "$header\n";
