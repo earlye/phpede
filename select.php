@@ -11,7 +11,7 @@ function select( $array , $field , $field_value )
 
       return $entry;
     }
-  throw new Exception( "Could not find entry where $field == $field_value" );
+  return null; // not found
 }
 
 ?>
