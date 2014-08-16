@@ -1,8 +1,7 @@
 <?php namespace phpede;
 
-function collapse( $array , $field , $field_value )
+function select( $array , $field , $field_value )
 {
-  $result = $array[0];
   foreach( $array as $entry )
     {
       if ( !isset( $entry->$field ) )
@@ -10,10 +9,9 @@ function collapse( $array , $field , $field_value )
       if ( $entry->$field != $field_value )
         continue;
 
-      foreach( get_object_vars($entry) as $key => $value )
-        $result->$key = $value;
+      return $entry;
     }
-  return $result;
+  throw new Exception( "Could not find entry where $field == $field_value" );
 }
 
 ?>
