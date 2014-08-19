@@ -15,26 +15,37 @@ function parse_argv( $usage )
     }
 
   global $argv;
-  array_shift($argv);
+  $command = array_shift($argv);
   while(count($argv))
     {
       $cmd = array_shift($argv);
       $entry = entry($alias_map, $cmd, null);
       if (isset($entry))
-        $entry->value = array_shift($argv);
+        {
+          if( $entry->multi )
+            {
+              if ( !isset($entry->value) )
+                $entry->value = array();
+              array_push( $entry->value, array_shift( $argv ));
+            }
+          else
+            $entry->value = array_shift($argv);
+        }
     }
 
   foreach( $usage as $entry )
     {
       if ($entry->required && !isset( $entry->value ))
         {
-          $message = "Usage: ".basename(__FILE__)." ";
+          $message = "Usage: ".basename($command)." ";
           $descriptions = "";
           foreach( $usage as $entry )
             {
               if (!$entry->required)
                 $message .= "[";
               $message .= join($entry->aliases,"|")." {".$entry->name."}";
+              if ($entry->multi)
+                $message .= "*";
               if (!$entry->required)
                 $message .= "]";
               else
