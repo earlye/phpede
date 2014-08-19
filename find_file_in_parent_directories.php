@@ -3,7 +3,7 @@
 // scan $first_directory and its parent directories until you find a
 // file with the specified basename, and return the path to that file.
 // return null if not found.
-function find_file_in_parent_directories( $basename , $first_directory )
+function find_file_in_parent_directories( $basename , $first_directory = null )
 {
   $dir = $first_directory;
   if ( !isset( $dir ) )
@@ -19,7 +19,7 @@ function find_file_in_parent_directories( $basename , $first_directory )
       $parent_dir = pathinfo($dir,PATHINFO_DIRNAME);
       if( $parent_dir == $dir )
         {
-          return null;
+          throw new Exception( "could not find \"$basename\"" );
         }
       $dir = $parent_dir;
     }
