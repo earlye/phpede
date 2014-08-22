@@ -2,8 +2,9 @@
 
 if ( !function_exists('password_hash') )
   {
-    define( PASSWORD_DEFAULT , 1 );
-    define( PASSWORD_BCRYPT , 1 );
+    define( 'PASSWORD_DEFAULT' , 1 );
+    define( 'PASSWORD_BCRYPT' , 1 );
+
     function password_hash( $password , $algo , $options = null )
     {
       if (!isset($options))
