@@ -22,7 +22,7 @@ function parse_argv( $usage )
       $entry = entry($alias_map, $cmd, null);
       if (isset($entry))
         {
-          if( $entry->multi )
+          if( @$entry->multi )
             {
               if ( !isset($entry->value) )
                 $entry->value = array();
@@ -44,9 +44,9 @@ function parse_argv( $usage )
               if (!$entry->required)
                 $message .= "[";
               $message .= join($entry->aliases,"|")." {".$entry->name."}";
-              if ($entry->multi)
+              if (@$entry->multi)
                 $message .= "*";
-              if (!$entry->required)
+              if (!@$entry->required)
                 $message .= "]";
               else
                 $message .= " ";
