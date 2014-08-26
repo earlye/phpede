@@ -51,7 +51,7 @@ function parse_argv( $usage )
               else
                 $message .= " ";
 
-              $descriptions .= " {".$entry->name."} ".$entry->description."\n";
+              $descriptions .= " {".@$entry->name."} ".@$entry->description."\n";
             }
           die("$message\n$descriptions");
         }
