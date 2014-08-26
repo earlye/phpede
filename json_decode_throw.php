@@ -10,7 +10,7 @@ function json_decode_throw( $string )
     case JSON_ERROR_NONE:
       return null; // the serialized object in $string was actually 'null'.
     default:
-      throw new Exception( json_last_error_msg() );
+      throw new Exception( json_last_error_msg() , json_last_error() );
     }
 }
 
