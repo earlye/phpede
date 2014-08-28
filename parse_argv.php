@@ -37,23 +37,25 @@ function parse_argv( $usage )
     {
       if ($entry->required && !isset( $entry->value ))
         {
-          $message = "Usage: ".basename($command)." ";
+          $message = "Usage:\n  ".basename($command)." ";
           $descriptions = "";
           foreach( $usage as $entry )
             {
+              $parameter = "";
               if (!$entry->required)
-                $message .= "[";
-              $message .= join($entry->aliases,"|")." {".$entry->name."}";
+                $parameter .= "[";
+              $parameter .= join($entry->aliases,"|")." {".$entry->name."}";
               if (@$entry->multi)
-                $message .= "*";
+                $parameter .= "*";
               if (!@$entry->required)
-                $message .= "]";
+                $parameter .= "]";
               else
-                $message .= " ";
+                $parameter .= " ";
 
-              $descriptions .= " {".@$entry->name."} ".@$entry->description."\n";
+              $message .= $parameter;
+              $descriptions .= "\n* $parameter : ".@$entry->description."\n";
             }
-          die("$message\n$descriptions");
+          die("$message\n\nOptions:$descriptions");
         }
     }
   return $usage_map;
