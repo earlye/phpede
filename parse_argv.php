@@ -3,6 +3,15 @@
 function parse_argv( $usage )
 {
   $usage = json_decode_throw( $usage );
+
+  $overview = "";
+
+  if ( !is_array($usage) )
+    {
+      $overview = @$usage->overview;
+      $usage = $usage->parameters;
+    }
+
   $usage_map = array();
   $alias_map = array();
   foreach( $usage as $entry )
@@ -37,7 +46,13 @@ function parse_argv( $usage )
     {
       if ($entry->required && !isset( $entry->value ))
         {
-          $message = "Usage:\n  ".basename($command)." ";
+          $message = "";
+          if (!empty_string($overview))
+            {
+              $message .= "Overview:\n  $overview\n\n";
+            }
+
+          $message .= "Usage:\n  ".basename($command)." ";
           $descriptions = "";
           foreach( $usage as $entry )
             {
@@ -45,15 +60,19 @@ function parse_argv( $usage )
               if (!$entry->required)
                 $parameter .= "[";
               $parameter .= join($entry->aliases,"|")." {".$entry->name."}";
-              if (@$entry->multi)
-                $parameter .= "*";
               if (!@$entry->required)
                 $parameter .= "]";
               else
                 $parameter .= " ";
 
               $message .= $parameter;
+
               $descriptions .= "\n* $parameter : ".@$entry->description."\n";
+              if (!empty_string(@$entry->type))
+                $descriptions .= "  Type: {$entry->type}\n";
+              if (@$entry->multi)
+                $descriptions .= "  This parameter can be repeated multiple times.\n";
+
             }
           die("$message\n\nOptions:$descriptions");
         }
