@@ -26,9 +26,21 @@ JSON;
       $test_files = glob("test_*.php");
     }
 
+  $failed_tests = array();
+  $passed_tests = array();
   foreach( $test_files as $test_file )
     {
-      require_once $test_file;
+      try
+        {
+          require_once $test_file;
+        }
+      catch( Exception $e )
+        {
+          $failure = new StdClass();
+          $failure->name = "Loading $test_file";
+          $failure->error = $e;
+          array_push( $failed_tests, $failure );
+        }
     }
 
   if ( !isset($test_functions) || !count($test_functions))
@@ -43,8 +55,6 @@ JSON;
         }
     }
 
-  $failed_tests = array();
-  $passed_tests = array();
   foreach( $test_functions as $function )
     {
       echo "Test: $function ...\n";
