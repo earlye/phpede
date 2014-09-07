@@ -16,7 +16,7 @@ class curl_exception extends Exception
 
   public function __toString()
   {
-    $result = "exception '".get_class($this)."' with message '".$this->getMessage()."' in ".$this->getFile().":".$this->getLine()."\n";
+    $result = "exception '".get_class($this)."' (".$this->getCode().") with message '".$this->getMessage()."' in ".$this->getFile().":".$this->getLine()."\n";
     $result .= "Response Headers:\n{$this->headers}\n";
     $result .= "Response Body:\n{$this->responseBody}\n";
     $result .= "Stack Trace:\n";
