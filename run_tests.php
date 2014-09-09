@@ -75,6 +75,7 @@ JSON;
           $finish = microtime(true);
           $time = number_format(($finish - $start),6)."s";
           $failure = new StdClass();
+          $failure->time = $time;
           $failure->name = $function;
           $failure->error = $e;
           array_push( $failed_tests, $failure );
