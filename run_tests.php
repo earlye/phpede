@@ -6,7 +6,7 @@
 // In the context of this test harness, a test is just a bare function which
 // takes a $config object and throws an exception to indicate failure.
 
-function run_tests()
+function run_tests( )
 {
   global $config;
 
@@ -17,7 +17,7 @@ function run_tests()
 JSON;
 
   $arguments = parse_argv( $usage );
-  $config = file_get_json( $arguments['config']->value );
+  $config = file_get_xjson( $arguments['config']->value );
   $test_files = @$arguments['files']->value;
   $test_functions = @$arguments['tests']->value;
 
@@ -64,7 +64,10 @@ JSON;
           $function($config);
           $finish = microtime(true);
           $time = number_format(($finish - $start),6)."s";
-          array_push( $passed_tests , $function );
+          $pass = new StdClass();
+          $pass->name = $function;
+          $pass->time = $time;
+          array_push( $passed_tests , $pass );
           echo "PASS: $function {$time}\n";
         }
       catch( Exception $e )
@@ -72,6 +75,7 @@ JSON;
           $finish = microtime(true);
           $time = number_format(($finish - $start),6)."s";
           $failure = new StdClass();
+          $failure->time = $time;
           $failure->name = $function;
           $failure->error = $e;
           array_push( $failed_tests, $failure );
@@ -82,6 +86,10 @@ JSON;
   if (count($passed_tests))
     {
       echo "Passed tests:".count($passed_tests)."\n";
+      foreach( $passed_tests as $pass )
+        {
+          echo " * [{$pass->time}] {$pass->name} \n";
+        }
     }
 
   if (count($failed_tests))
@@ -89,7 +97,7 @@ JSON;
       echo "Failed tests:".count($failed_tests)."\n";
       foreach( $failed_tests as $failure )
         {
-          echo " * {$failure->name}\n";
+          echo " * [{$failure->time}] {$failure->name} \n";
         }
     }
 }

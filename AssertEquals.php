@@ -1,9 +1,9 @@
 <?php
 
-function AssertEquals( $expected , $actual )
+function AssertEquals( $expected , $actual , $message = "Expected values to be equal:" )
 {
   if ( $expected != $actual )
-    throw new TestFailureException( "Expected \"$expected\" , got \"$actual\"" );
+    throw new TestFailureException( "$message ".json_encode($expected)."; ".json_encode($actual) );
 }
 
 ?>
