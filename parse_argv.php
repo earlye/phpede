@@ -44,7 +44,7 @@ function parse_argv( $usage )
 
   foreach( $usage as $entry )
     {
-      if ($entry->required && !isset( $entry->value ))
+      if (@$entry->required && !isset( $entry->value ))
         {
           $message = "";
           if (!empty_string($overview))
@@ -61,7 +61,7 @@ function parse_argv( $usage )
                 $parameter .= "[";
               $parameter .= join($entry->aliases,"|")." {".$entry->name."}";
               if (!@$entry->required)
-                $parameter .= "]";
+                $parameter .= "] ";
               else
                 $parameter .= " ";
 
