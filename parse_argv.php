@@ -1,8 +1,8 @@
 <?php
 
-function parse_argv( $usage )
+function parse_argv( $options )
 {
-  $usage = json_decode_throw( $usage );
+  $usage = json_decode_throw( $options );
 
   $overview = "";
 
@@ -37,6 +37,10 @@ function parse_argv( $usage )
                 $entry->value = array();
               array_push( $entry->value, array_shift( $argv ));
             }
+          else if ( @$entry->type == "flag" )
+            {
+              $entry->value = true;
+            }
           else
             $entry->value = array_shift($argv);
         }
@@ -46,35 +50,7 @@ function parse_argv( $usage )
     {
       if (@$entry->required && !isset( $entry->value ))
         {
-          $message = "";
-          if (!empty_string($overview))
-            {
-              $message .= "Overview:\n  $overview\n\n";
-            }
-
-          $message .= "Usage:\n  ".basename($command)." ";
-          $descriptions = "";
-          foreach( $usage as $entry )
-            {
-              $parameter = "";
-              if (!$entry->required)
-                $parameter .= "[";
-              $parameter .= join($entry->aliases,"|")." {".$entry->name."}";
-              if (!@$entry->required)
-                $parameter .= "] ";
-              else
-                $parameter .= " ";
-
-              $message .= $parameter;
-
-              $descriptions .= "\n* $parameter : ".@$entry->description."\n";
-              if (!empty_string(@$entry->type))
-                $descriptions .= "  Type: {$entry->type}\n";
-              if (@$entry->multi)
-                $descriptions .= "  This parameter can be repeated multiple times.\n";
-
-            }
-          die("$message\n\nOptions:$descriptions");
+          die( parse_argv_help( $options ) );
         }
     }
   return $usage_map;
