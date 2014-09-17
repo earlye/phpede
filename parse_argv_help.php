@@ -26,7 +26,10 @@ function parse_argv_help( $options )
       $parameter = "";
       if (!$entry->required)
         $parameter .= "[";
-      $parameter .= join($entry->aliases,"|")." {".$entry->name."}";
+      $parameter .= join($entry->aliases,"|");
+      if (@$entry->type != "flag")
+        $parameter .= " {".$entry->name."}";
+
       if (!@$entry->required)
         $parameter .= "] ";
       else
