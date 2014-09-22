@@ -3,7 +3,7 @@
 require_once "entry.php";
 require_once "http_result_strings.php";
 
-function curl_transfer( $url , $curloptions , &$response_headers )
+function curl_transfer( $url , $curloptions , &$response_headers = null )
 {
   global $config;
 
