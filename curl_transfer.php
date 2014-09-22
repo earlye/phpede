@@ -3,7 +3,7 @@
 require_once "entry.php";
 require_once "http_result_strings.php";
 
-function curl_transfer( $url , $curloptions )
+function curl_transfer( $url , $curloptions , &$response_headers )
 {
   global $config;
 
@@ -58,6 +58,9 @@ function curl_transfer( $url , $curloptions )
       echo "$result\n";
       echo "===\n";
     }
+
+  if (isset($response_headers))
+    $response_headers = $headers;
 
   if ( ! ( 200 <= $http_code && $http_code < 300 ) )
     {
