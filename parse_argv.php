@@ -24,10 +24,11 @@ function parse_argv( $options )
     }
 
   global $argv;
-  $command = array_shift($argv);
-  while(count($argv))
+  $args = $argv;
+  $command = array_shift($args);
+  while(count($args))
     {
-      $cmd = array_shift($argv);
+      $cmd = array_shift($args);
       $entry = entry($alias_map, $cmd, null);
       if (isset($entry))
         {
@@ -35,14 +36,14 @@ function parse_argv( $options )
             {
               if ( !isset($entry->value) )
                 $entry->value = array();
-              array_push( $entry->value, array_shift( $argv ));
+              array_push( $entry->value, array_shift( $args ));
             }
           else if ( @$entry->type == "flag" )
             {
               $entry->value = true;
             }
           else
-            $entry->value = array_shift($argv);
+            $entry->value = array_shift($args);
         }
     }
 

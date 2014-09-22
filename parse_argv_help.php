@@ -2,7 +2,10 @@
 
 function parse_argv_help( $options )
 {
+  global $argv;
+
   $usage = json_decode_throw( $options );
+  $command = $argv[0];
 
   $overview = "";
 
