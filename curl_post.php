@@ -19,7 +19,7 @@ function curl_post( $url , $data , $options = null , $headers = null , &$respons
   if ( !isset( $options[CURLOPT_RETURNTRANSFER] ) ) $options[CURLOPT_RETURNTRANSFER] = true;
   if ( !isset( $options[CURLOPT_HTTPHEADER] ) ) $options[CURLOPT_HTTPHEADER] = $curlopt_httpheader;
 
-  $result = curl_transfer( $url , $options , &$response_headers );
+  $result = curl_transfer( $url , $options , $response_headers );
   return $result;
 }
 
