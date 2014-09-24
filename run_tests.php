@@ -100,6 +100,8 @@ JSON;
           echo " * [{$failure->time}] {$failure->name} \n";
         }
     }
+
+  return count($failed_tests);
 }
 
 ?>
