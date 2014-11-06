@@ -2,6 +2,9 @@
 
 function stdclass_replace_recursive( $dest , $src )
 {
+  if ( !isset($src) )
+    return;
+
   $properties = get_object_vars( $src );
   foreach( $properties as $key => $value )
     {
