@@ -4,13 +4,13 @@ if (!function_exists('getallheaders'))
   {
     function getallheaders()
     {
-      $headers = '';
+      $headers = array();
       foreach ($_SERVER as $name => $value)
         {
           // header( "x-server-$name: $value" );
           if (substr($name, 0, 5) == 'HTTP_')
             {
-              $headers[str_replace(' ', '-', (strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+              $headers[str_replace(' ', '-', (str_replace('_', ' ', substr($name, 5))))] = $value;
             }
         }
       //foreach ($headers as $name => $value )
@@ -21,9 +21,20 @@ if (!function_exists('getallheaders'))
     }
   }
 
+function get_lowercase_headers()
+{
+  $temp = getallheaders();
+  $result = array();
+  foreach( $temp as $key => $value )
+    {
+      $result[strtolower($key)] = $value;
+    }
+  return $result;
+}
+
 function http_get_request_header( $name , $default = null )
 {
-  $headers = getallheaders();
+  $headers = get_lowercase_headers();
   if ( !isset($headers[$name] ) )
     return $default;
   return $headers[$name];
