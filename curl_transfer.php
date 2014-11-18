@@ -30,9 +30,24 @@ function curl_transfer( $url , $curloptions , &$response_headers = null )
         $uri .= "?$query";
       echo "===\nRequest: $url\n";
       echo "$method $uri HTTP/1.1\nHeaders:\n";
-      foreach( entry( $curloptions, CURLOPT_HTTPHEADER , array() ) as $header )
-        echo "$header\n";
-      echo "Data:\n$data\n";
+      foreach( $curloptions as $key => $value )
+        {
+          switch( $key )
+            {
+              case CURLOPT_COOKIE :
+              {
+                echo "Cookie: $value\n";
+                break;
+              }
+              case CURLOPT_HTTPHEADER :
+              {
+                foreach( $value as $header )
+                  echo "$header\n";
+                break;
+              }
+            }
+        }
+      echo "\n$data\n";
 
       echo "===\n";
     }
