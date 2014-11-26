@@ -12,6 +12,7 @@ function parse_argv( $options )
       $usage = $usage->parameters;
     }
 
+  $need_help = false;
   $usage_map = array();
   $alias_map = array();
   foreach( $usage as $entry )
@@ -45,15 +46,24 @@ function parse_argv( $options )
           else
             $entry->value = array_shift($args);
         }
+      else if ($cmd == "--help" )
+        {
+          $need_help = true;
+        }
     }
 
   foreach( $usage as $entry )
     {
       if (@$entry->required && !isset( $entry->value ))
         {
-          die( parse_argv_help( $options ) );
+          $need_help = true;
+          break;
         }
     }
+
+  if ( $need_help )
+    die( parse_argv_help( $options ) );
+
   return $usage_map;
 }
 

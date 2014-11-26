@@ -46,6 +46,9 @@ function parse_argv_help( $options )
       if (@$entry->multi)
         $descriptions .= "  This parameter can be repeated multiple times.\n";
 
+      if (!empty_string(@$entry->value))
+        $descriptions .= "  Default: {$entry->value}\n";
+
     }
 
   return "$message\n\nOptions:$descriptions";
