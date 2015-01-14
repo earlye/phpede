@@ -45,6 +45,11 @@ function curl_transfer( $url , $curloptions , &$response_headers = null )
                   echo "$header\n";
                 break;
               }
+              case CURLOPT_USERPWD:
+              {
+                echo "Authorization: Basic ****\n";
+                break;
+              }
             }
         }
       echo "\n$data\n";
