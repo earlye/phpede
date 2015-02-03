@@ -15,14 +15,6 @@ function update_include_path( )
   set_include_path(get_include_path(). PATH_SEPARATOR ."$parent_dir");
 }
 
-// Grab all files in the same directory as this module and require them, too.
-// In Emacs, try M-x, find-file-at-point on this string: "."
-foreach (glob(pathinfo( __FILE__ ,  PATHINFO_DIRNAME ). DIRECTORY_SEPARATOR . "*.php") as $filename)
-  {
-    require_once $filename;
-  }
-
-
 function determineTimezoneFromSystem($default)
 {
   // On many systems (Mac, for instance) "/etc/localtime" is a symlink
@@ -60,6 +52,13 @@ function determineTimezoneFromSystem($default)
       return  $default;
     }
 }
+
+// Grab all files in the same directory as this module and require them, too.
+// In Emacs, try M-x, find-file-at-point on this string: "."
+foreach (glob(pathinfo( __FILE__ ,  PATHINFO_DIRNAME ). DIRECTORY_SEPARATOR . "*.php") as $filename)
+  {
+    require_once $filename;
+  }
 
 date_default_timezone_set(determineTimezoneFromSystem('America/Chicago'));
 update_include_path();

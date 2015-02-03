@@ -2,7 +2,7 @@
 
 require_once "curl_transfer.php";
 
-function curl_get( $url , $options = null , $headers = null )
+function curl_get( $url , $options = null , $headers = null , &$response_headers = null )
 {
   if ( $headers == null )
      $headers = array();
@@ -20,7 +20,7 @@ function curl_get( $url , $options = null , $headers = null )
   if ( !isset($options[CURLOPT_HTTPHEADER] ) ) $options[CURLOPT_HTTPHEADER] = $curlopt_httpheader;
   if ( !isset($options[CURLOPT_RETURNTRANSFER] ) ) $options[CURLOPT_RETURNTRANSFER] = true;
 
-  return curl_transfer( $url , $options );
+  return curl_transfer( $url , $options , $response_headers );
 }
 
 ?>
